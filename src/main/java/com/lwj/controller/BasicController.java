@@ -32,12 +32,22 @@ public class BasicController {
 	@Resource
 	IFriendDelete friendDelete;
 	
+	@RequestMapping("/chat")
+	public String chat(HttpServletRequest request,Model model){
+		int room = Integer.parseInt(request.getParameter("room"));
+		int uid = Integer.parseInt(request.getParameter("uid"));
+		model.addAttribute("room", room);
+		model.addAttribute("uid", uid);
+		return "chat";
+	}
+	
 	@RequestMapping("/register")
 	public void register(HttpServletRequest request, HttpServletResponse response) throws IOException{
 		String account  = request.getParameter("account");
 		String password  = request.getParameter("password");
 		String tel  = request.getParameter("tel");
 		JsonResult result = registerService.register(account, password,tel);
+		System.out.println(JSON.toJSONString(result));
 		sendResult(response, result);
 	}
 	

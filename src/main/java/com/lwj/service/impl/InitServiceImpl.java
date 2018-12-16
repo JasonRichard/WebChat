@@ -60,7 +60,7 @@ public class InitServiceImpl implements IInitService {
 //			map.put("friendInfo_"+i, Info2Hash(userPublicDao.selectByPrimaryKey(friendId)));
 			friendInfo.add(userPublicDao.selectByPrimaryKey(friendId));
 		}
-		map.put("friendInfo", Info2Hash(friendInfo));
+		map.put("friendInfo", friendInfo);
 		return ResponseType.INFO_GET;
 	}
 
