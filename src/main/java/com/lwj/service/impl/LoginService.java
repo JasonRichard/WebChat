@@ -6,9 +6,11 @@ import java.util.HashMap;
 
 import javax.annotation.Resource;
 
+import com.lwj.service.IChatRecord;
 import com.lwj.service.ILoginService;
 import com.lwj.util.enums.ResponseType;
 import com.lwj.util.pojo.JsonResult;
+import com.lwj.persistence.dao.ChatRecordMapper;
 import com.lwj.persistence.dao.UserPrivateMapper;
 import com.lwj.persistence.pojo.UserPrivate;
 
@@ -17,6 +19,12 @@ public class LoginService implements ILoginService{
 	
 	@Resource
 	private UserPrivateMapper userPrivate_Dao;
+	 
+	@Resource
+	private ChatRecordMapper chatRecordDao;
+	
+	@Resource
+	private IChatRecord chatRecord;
 	
 	@Override
 	public  ResponseType login_check(String account, String password, HashMap<String, Object> map) {
@@ -25,7 +33,10 @@ public class LoginService implements ILoginService{
 			return ResponseType.LOGIN_WRONG;
 		if(password.equals(user_log.getPassword()))
 		{
-			map.put("uid", user_log.getUid());
+			int uid = user_log.getUid();
+			map.put("uid", uid);
+//			System.out.println(chatRecordDao.selectByReceiver(uid));
+			map.put("offlineMsg", chatRecord.readOfflineMsg(uid));
 			return ResponseType.LOGIN_SUCESS;
 		}
 		else

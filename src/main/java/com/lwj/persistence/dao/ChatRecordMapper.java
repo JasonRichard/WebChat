@@ -1,5 +1,7 @@
 package com.lwj.persistence.dao;
 
+import java.util.List;
+
 import com.lwj.persistence.pojo.ChatRecord;
 import com.lwj.persistence.pojo.ChatRecordKey;
 
@@ -15,4 +17,6 @@ public interface ChatRecordMapper {
     int updateByPrimaryKeySelective(ChatRecord record);
 
     int updateByPrimaryKey(ChatRecord record);
+
+	List<ChatRecord> selectByReceiver(Integer receiver);
 }

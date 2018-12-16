@@ -42,12 +42,13 @@ CREATE TABLE IF NOT EXISTS `record`(
 )ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `friend`(
+   `num` INT UNSIGNED AUTO_INCREMENT, 
    `uid1` INT UNSIGNED,
    `uid2` INT UNSIGNED,
-   PRIMARY KEY ( `uid1`,`uid2` ),
-   FOREIGN KEY (`uid1`) 
+   PRIMARY KEY ( `num` ),
+   FOREIGN KEY ( `uid1` ) 
    REFERENCES `chat`.`private_info`(`uid`),
-   FOREIGN KEY (`uid2`) 
+   FOREIGN KEY ( `uid2` ) 
    REFERENCES `chat`.`private_info`(`uid`)
 )ENGINE = InnoDB;
 
@@ -56,6 +57,7 @@ CREATE TABLE IF NOT EXISTS `complaint`(
    `complainee` INT UNSIGNED,
    `content` VARCHAR(90) NOT NULL,
    `time` DATETIME,
+   `check` BOOLEAN,
    PRIMARY KEY ( `complainer`,`complainee`,`time`),
    FOREIGN KEY ( `complainer` )
    REFERENCES `chat`.`private_info`(`uid`),

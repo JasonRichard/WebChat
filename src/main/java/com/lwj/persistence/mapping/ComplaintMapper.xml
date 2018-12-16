@@ -6,9 +6,10 @@
     <id column="complainee" jdbcType="INTEGER" property="complainee" />
     <id column="time" jdbcType="TIMESTAMP" property="time" />
     <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="check" jdbcType="BIT" property="check" />
   </resultMap>
   <sql id="Base_Column_List">
-    complainer, complainee, time, content
+    complainer, complainee, time, content, check
   </sql>
   <select id="selectByPrimaryKey" parameterType="com.lwj.persistence.pojo.ComplaintKey" resultMap="BaseResultMap">
     select 
@@ -26,9 +27,9 @@
   </delete>
   <insert id="insert" parameterType="com.lwj.persistence.pojo.Complaint">
     insert into complaint (complainer, complainee, time, 
-      content)
+      content, check)
     values (#{complainer,jdbcType=INTEGER}, #{complainee,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, 
-      #{content,jdbcType=VARCHAR})
+      #{content,jdbcType=VARCHAR}, #{check,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.lwj.persistence.pojo.Complaint">
     insert into complaint
@@ -45,6 +46,9 @@
       <if test="content != null">
         content,
       </if>
+      <if test="check != null">
+        check,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="complainer != null">
@@ -59,6 +63,9 @@
       <if test="content != null">
         #{content,jdbcType=VARCHAR},
       </if>
+      <if test="check != null">
+        #{check,jdbcType=BIT},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.lwj.persistence.pojo.Complaint">
@@ -67,6 +74,9 @@
       <if test="content != null">
         content = #{content,jdbcType=VARCHAR},
       </if>
+      <if test="check != null">
+        check = #{check,jdbcType=BIT},
+      </if>
     </set>
     where complainer = #{complainer,jdbcType=INTEGER}
       and complainee = #{complainee,jdbcType=INTEGER}
@@ -74,7 +84,8 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.lwj.persistence.pojo.Complaint">
     update complaint
-    set content = #{content,jdbcType=VARCHAR}
+    set content = #{content,jdbcType=VARCHAR},
+      check = #{check,jdbcType=BIT}
     where complainer = #{complainer,jdbcType=INTEGER}
       and complainee = #{complainee,jdbcType=INTEGER}
       and time = #{time,jdbcType=TIMESTAMP}

@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
- 
+
+import javax.annotation.Resource;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -16,11 +17,16 @@ import javax.websocket.server.ServerEndpoint;
  
 import org.apache.log4j.Logger;
 import org.springframework.web.socket.server.standard.SpringConfigurator;
+
+import com.lwj.service.IChatRecord;
+import com.lwj.socket.UserOnline;
  
  
 //websocket连接URL地址和可被调用配置 
 @ServerEndpoint(value="/chat/{room}/{uid}",configurator = SpringConfigurator.class)
 public class WebSocketChat {
+	@Resource
+	private IChatRecord chatRecord;
 	
 	private static Logger logger = Logger.getRootLogger();
     //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
@@ -29,10 +35,13 @@ public class WebSocketChat {
     //记录每个用户下多个终端的连接
     private static Map<String, Set<WebSocketChat>> userSocket = new HashMap<>();
  
+    //*****************8记录在线用户**********************8
+    private static UserOnline userList = UserOnline.getInstance();
+    
     //需要session来对用户发送数据, 获取连接特征userId
     private Session session;
     private String room;
-   
+    private int userID;
     /**
      * @Title: onOpen
      * @Description: websocekt连接建立时的操作
@@ -41,10 +50,16 @@ public class WebSocketChat {
      * @param @throws IOException
      */
     @OnOpen
-    public void onOpen(@PathParam("room") String room,Session session) throws IOException{
+    public void onOpen(@PathParam("room") String room, @PathParam("uid") int userID, Session session) throws IOException{
         this.session = session;
         this.room = room;
+        this.userID = userID;
+        
         onlineCount++;
+        
+        //**********在线列表添加用户***************
+        if(!userList.user_check_online(userID))
+        	userList.user_in(userID);
         //根据该用户当前是否已经在别的终端登录进行添加操作
         if (userSocket.containsKey(this.room)) {
             logger.info("当前聊天室id:{"+this.room+"}已有其他终端登录");
@@ -65,6 +80,9 @@ public class WebSocketChat {
      */
     @OnClose
     public void onClose(){
+    	//*************在线列表去除用户***************
+    	userList.user_off(userID);
+    	
         //移除当前用户终端登录的websocket信息,如果该用户的所有终端都下线了，则删除该用户的记录
         if (userSocket.get(this.room).size() == 0) {
             userSocket.remove(this.room);
@@ -86,6 +104,13 @@ public class WebSocketChat {
         logger.info("收到来自聊天室为：{"+this.room+"}的消息：{"+message+"}");
         if(session == null)  logger.info("session null");
         //测试向客户端发送消息发送
+        String[] arr = room.split("_");
+        int receiver;
+        if(Integer.parseInt(arr[0])==userID)
+        	receiver = Integer.parseInt(arr[1]);
+        else
+        	receiver = Integer.parseInt(arr[0]);
+        chatRecord.storeOfflineMsg(userID, receiver, message);
         sendMessageToUser(this.room, message);
     }
    

@@ -42,7 +42,7 @@
                 function send() {
                     if(websocket != null) {
                         var message = document.getElementById('message').value;
-                        websocket.send(message+"来自用户"+'${uid}');
+                        websocket.send(message);
                     } else {
                         alert('未与服务器链接.');
                     }
