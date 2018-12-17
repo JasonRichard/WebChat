@@ -63,29 +63,58 @@ public class BasicController {
 	}
 	
 	@RequestMapping("/anonymous")
-	public String chat(HttpServletRequest request, HttpServletResponse response, Model model){
+	public String chat(HttpServletRequest request, HttpServletResponse response, Model model) throws InterruptedException{
 		String uid = request.getParameter("uid");//uid为当前用户uid
 		UserInMatch userList = UserInMatch.getInstance();
 		
 		userList.user_in(uid);
 		
+		//匹配缓冲时间
+		Thread.sleep(2000);
+		
 		String uid1 = uid;
 		String uid2 = "waiting";
-		while(userList.user_match_check(uid).equals(uid2))
+		int i = 10;
+		while (i > 0) {
+			//System.err.println(i);
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(!userList.user_match_check(uid).equals(uid2))
+				{
+					uid2 = userList.user_match_check(uid);
+					
+					System.out.println(userList.get_UserList().toString());
+					
+//					String u1=String.valueOf(uid1);
+//					String u2=String.valueOf(uid2);
+//					System.out.println((uid1.compareTo(uid2)<0)+" "+uid1+" "+uid2);
+					String room = (uid1.compareTo(uid2)<0) ? uid1+"_"+uid2: uid2+"_"+uid1;
+					userList.user_off(uid);
+					model.addAttribute("room", room);
+					model.addAttribute("uid", uid);
+					return "chat";
+				}
+				i--;
+			}
+		
+		return "error";
+		
+/*		while(userList.user_match_check(uid).equals(uid2))
 		{
-			/*Calendar current_time = Calendar.getInstance();
+			Calendar current_time = Calendar.getInstance();
 			if(current_time.get - start_time.getSeconds() > 300) {
 				HashMap<String, Object> data = new HashMap<String, Object>();
 				JsonResult result =  new JsonResult(ResponseType.MATCH_ERROR,data);
 				sendResult(response, result);		
 			}
-			/*
-			 * 放一个计时器 作为匹配用户时候的max time 超过time 报错send Response
-			 * 
-			 */
-		}
+
+		}*/
 		//若果uid在队列 0 ，1的位置，设置另一用户为
-		uid2 = userList.user_match_check(uid);
+		/*uid2 = userList.user_match_check(uid);
 		
 		System.out.println(userList.get_UserList().toString());
 		
@@ -96,7 +125,7 @@ public class BasicController {
 		userList.user_off(uid);
 		model.addAttribute("room", room);
 		model.addAttribute("uid", uid);
-		return "chat";
+		return "chat";*/
 	}
 	
 //	@RequestMapping("/chat")
