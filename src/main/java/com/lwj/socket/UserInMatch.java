@@ -11,6 +11,8 @@ public class UserInMatch {
 
 	List<String> userList;
 	
+	private int flag = 0;
+	
 	private UserInMatch() {
 		userCount = 0;
 		userList=new ArrayList<String>();
@@ -43,6 +45,19 @@ public class UserInMatch {
 		return userCount;
 	}
 	
+	public void check_flag() {
+		if(flag == 2) {
+			userList.remove(0);
+			userList.remove(1);
+			userCount -= 2;
+			flag = 0;
+		}
+	}
+	
+	public void set_flage() {
+		flag++;
+	}
+	
 	public List<String> get_UserList(){
 		return userList;
 	}
@@ -50,5 +65,4 @@ public class UserInMatch {
 	public static UserInMatch getInstance() {
 		return userlist;
 	}
-	
 }

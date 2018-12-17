@@ -41,6 +41,7 @@ public class LoginService implements ILoginService{
 			map.put("uid", uid);
 //			System.out.println(chatRecordDao.selectByReceiver(uid));
 			map.put("offlineMsg", chatRecord.readOfflineMsg(uid));
+			//获取好友列表
 			initService.getInfo2(uid, map);
 			return ResponseType.LOGIN_SUCESS;
 		}

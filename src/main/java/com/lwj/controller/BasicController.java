@@ -93,7 +93,8 @@ public class BasicController {
 //					String u2=String.valueOf(uid2);
 //					System.out.println((uid1.compareTo(uid2)<0)+" "+uid1+" "+uid2);
 					String room = (uid1.compareTo(uid2)<0) ? uid1+"_"+uid2: uid2+"_"+uid1;
-					userList.user_off(uid);
+					userList.set_flage();
+					userList.check_flag();
 					model.addAttribute("room", room);
 					model.addAttribute("uid", uid);
 					return "chat";
