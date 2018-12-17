@@ -1,9 +1,8 @@
 package com.lwj.service.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
+import java.util.HashMap;
 
 import javax.annotation.Resource;
 
@@ -14,7 +13,6 @@ import com.lwj.persistence.pojo.ChatRecord;
 import com.lwj.service.IChatRecord;
 import com.lwj.util.enums.ResponseType;
 import com.lwj.util.pojo.JsonResult;
-import com.lwj.util.pojo.MsgInf;
 
 @Service("chatService")
 public class ChatRecordImpl implements IChatRecord {
@@ -31,34 +29,22 @@ public class ChatRecordImpl implements IChatRecord {
 		record.setTime(dateTime);
 		record.setContent(content);
 		return chatRecordDao.insert(record);
+		
 	}
 
 	@Override
-	public List<ChatRecord> readMsg(Integer uid1, Integer uid2) {
+	public List<ChatRecord> readMsg(Integer sender, Integer receiver) {
 //		List<ChatRecord> offlineMsg = chatRecordDao.selectByReceiver(receiver);
-		List<ChatRecord> message = chatRecordDao.selectBySenderAndReceiver(uid1, uid2);
+		List<ChatRecord> message = chatRecordDao.selectBySenderAndReceiver(sender, receiver);
 		return message;
 	}
-
+	
 	@Override
-	public ResponseType findMsg(Integer sender, Integer receiver, HashMap<String, Object> map) {
-		List<ChatRecord> message = readMsg(sender,receiver);
-		List<MsgInf> message2 = new ArrayList<MsgInf>();
-		int record_no = 0;
-		for(ChatRecord record: message) {
-			MsgInf temp = new MsgInf();
-			if(record.getSender() == sender)
-				temp.setFromWho(true);
-			else
-				temp.setFromWho(false);
-			temp.setId(record_no++);
-			temp.setText(record.getContent());
-			message2.add(temp);
-		}
-		map.put("message", message2);
+	public  ResponseType findMsg(Integer sender, Integer receiver, HashMap<String, Object> map) {
+		map.put("offlineMsg", readMsg(sender,receiver));
 		return ResponseType.MSG_GET;
 	}
-
+	
 	@Override
 	public JsonResult getMsg(Integer sender, Integer receiver) {
 		HashMap<String, Object> data = new HashMap<String, Object>();
@@ -68,4 +54,6 @@ public class ChatRecordImpl implements IChatRecord {
         return new JsonResult(responseType,data);
 	}
 
+	
+	
 }

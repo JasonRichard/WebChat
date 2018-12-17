@@ -25,7 +25,6 @@ public class FriendDelete implements IFriendDelete{
 	public ResponseType delete(Integer uid1, Integer uid2, HashMap<String, Object> map) {
 		friend_Dao.deleteByUID(uid1, uid2);
 		friend_Dao.deleteByUID(uid2, uid1);
-		initService.getInfo2(uid1, map);
 		return ResponseType.OPERATE_DONE;
 		
 	}

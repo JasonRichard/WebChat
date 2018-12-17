@@ -77,30 +77,30 @@ public class BasicController {
 		int i = 10;
 		while (i > 0) {
 			//System.err.println(i);
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				if(!userList.user_match_check(uid).equals(uid2))
-				{
-					uid2 = userList.user_match_check(uid);
-					
-					System.out.println(userList.get_UserList().toString());
-					
-//					String u1=String.valueOf(uid1);
-//					String u2=String.valueOf(uid2);
-//					System.out.println((uid1.compareTo(uid2)<0)+" "+uid1+" "+uid2);
-					String room = (uid1.compareTo(uid2)<0) ? uid1+"_"+uid2: uid2+"_"+uid1;
-					userList.set_flage();
-					userList.check_flag();
-					model.addAttribute("room", room);
-					model.addAttribute("uid", uid);
-					return "chat";
-				}
-				i--;
+				e.printStackTrace();
 			}
+			if(!userList.user_match_check(uid).equals(uid2))
+			{
+				uid2 = userList.user_match_check(uid);
+					
+				System.out.println(userList.get_UserList().toString());
+					
+//				String u1=String.valueOf(uid1);
+//				String u2=String.valueOf(uid2);
+//				System.out.println((uid1.compareTo(uid2)<0)+" "+uid1+" "+uid2);
+				String room = (uid1.compareTo(uid2)<0) ? uid1+"_"+uid2: uid2+"_"+uid1;
+				model.addAttribute("room", room);
+				model.addAttribute("uid", uid);
+				userList.set_flag();
+				userList.check_flag();
+				return "chat";
+			}
+				i--;
+		}
 		
 		return "error";
 		
@@ -187,6 +187,14 @@ public class BasicController {
 		int uid2 = Integer.parseInt(request.getParameter("uid2"));
 		friendDelete.del_friend(uid1, uid2);
 		JsonResult result = initService.init(uid1);
+		sendResult(response, result);
+	}
+	
+	@RequestMapping("/getMSG")
+	public void getMSG(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		int uid1 = Integer.parseInt(request.getParameter("uid1"));//uid1为当前用户uid
+		int uid2 = Integer.parseInt(request.getParameter("uid2"));
+		JsonResult result = chatRecord.getMsg(uid1, uid2);
 		sendResult(response, result);
 	}
 	

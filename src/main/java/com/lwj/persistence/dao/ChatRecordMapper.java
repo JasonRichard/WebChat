@@ -22,5 +22,5 @@ public interface ChatRecordMapper {
 
 	List<ChatRecord> selectByReceiver(Integer receiver);
 
-	List<ChatRecord> selectBySenderAndReceiver(@Param(value="sender")Integer sender, @Param(value="receiver")Integer receiver);
+	List<ChatRecord> selectBySenderAndReceiver(@Param(value="uid1")Integer uid1, @Param(value="uid2")Integer uid2);
 }

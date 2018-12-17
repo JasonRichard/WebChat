@@ -6,7 +6,7 @@ public enum ResponseType {
 	REGISTER_WRONG(1,"账号已存在"),
 	REGISTER_SUCESS(11,"注册成功"),
 	OPERATE_DONE(2,"操作完成"),
-	
+	MSG_GET(3,"得到聊天信息"),
 	MATCH_ERROR(12,"匹配超时"),
 	MATCH_SUCESS(20,"匹配成功"),
 	

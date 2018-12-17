@@ -28,8 +28,11 @@
     select 
     <include refid="Base_Column_List" />
     from record
-    where sender = #{sender,jdbcType=INTEGER}
-      and receiver = #{receiver,jdbcType=INTEGER}
+    where sender = #{uid1,jdbcType=INTEGER}
+      and receiver = #{uid2,jdbcType=INTEGER} 
+      or sender = #{uid2,jdbcType=INTEGER}
+      and receiver = #{uid1,jdbcType=INTEGER}
+      order by time asc
   </select>
   <delete id="deleteByPrimaryKey" parameterType="com.lwj.persistence.pojo.ChatRecordKey">
     delete from record

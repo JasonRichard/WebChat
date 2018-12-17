@@ -11,11 +11,12 @@ public class UserInMatch {
 
 	List<String> userList;
 	
-	private int flag = 0;
+	private int flag;
 	
 	private UserInMatch() {
 		userCount = 0;
 		userList=new ArrayList<String>();
+		flag = 0;
 	}
 	
 	public void user_in(String uid) {
@@ -54,7 +55,7 @@ public class UserInMatch {
 		}
 	}
 	
-	public void set_flage() {
+	public void set_flag() {
 		flag++;
 	}
 	
