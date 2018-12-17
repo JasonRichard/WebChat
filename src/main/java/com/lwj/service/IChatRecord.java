@@ -8,6 +8,8 @@ public interface IChatRecord {
 	
 	public int storeOfflineMsg(Integer sender, Integer receiver, String content);
 	
-	public List<ChatRecord> readOfflineMsg(Integer receiver);
+//	public List<ChatRecord> readOfflineMsg(Integer receiver);
+
+	List<ChatRecord> readMsg(Integer sender, Integer receiver);
 	
 }

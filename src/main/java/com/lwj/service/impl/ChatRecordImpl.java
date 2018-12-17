@@ -29,9 +29,10 @@ public class ChatRecordImpl implements IChatRecord {
 	}
 
 	@Override
-	public List<ChatRecord> readOfflineMsg(Integer receiver) {
-		List<ChatRecord> offlineMsg = chatRecordDao.selectByReceiver(receiver);
-		return offlineMsg;
+	public List<ChatRecord> readMsg(Integer sender, Integer receiver) {
+//		List<ChatRecord> offlineMsg = chatRecordDao.selectByReceiver(receiver);
+		List<ChatRecord> message = chatRecordDao.selectBySenderAndReceiver(sender, receiver);
+		return message;
 	}
 
 }

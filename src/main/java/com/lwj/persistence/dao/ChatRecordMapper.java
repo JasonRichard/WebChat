@@ -2,6 +2,8 @@ package com.lwj.persistence.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.lwj.persistence.pojo.ChatRecord;
 import com.lwj.persistence.pojo.ChatRecordKey;
 
@@ -19,4 +21,6 @@ public interface ChatRecordMapper {
     int updateByPrimaryKey(ChatRecord record);
 
 	List<ChatRecord> selectByReceiver(Integer receiver);
+
+	List<ChatRecord> selectBySenderAndReceiver(@Param(value="sender")Integer sender, @Param(value="receiver")Integer receiver);
 }
