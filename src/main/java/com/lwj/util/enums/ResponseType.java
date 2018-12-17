@@ -8,7 +8,7 @@ public enum ResponseType {
 	OPERATE_DONE(2,"操作完成"),
 	
 	MATCH_ERROR(12,"匹配超时"),
-	MATCH_SUCESS(20,"匹配成功")
+	MATCH_SUCESS(20,"匹配成功"),
 	
 	INFO_GET(50,"得到所有信息");
 	

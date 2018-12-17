@@ -28,6 +28,7 @@ import com.alibaba.fastjson.JSON;
 @Controller
 @RequestMapping("/basic")
 public class BasicController {
+	
 	@Resource
 	ILoginService loginService;
 	
@@ -61,18 +62,16 @@ public class BasicController {
 		return "chat";
 	}
 	
-	@SuppressWarnings("deprecation")
 	@RequestMapping("/anonymous")
 	public String chat(HttpServletRequest request, HttpServletResponse response, Model model){
-		Date start_time=new Date(0);
-		int uid = Integer.parseInt(request.getParameter("uid"));//uid为当前用户uid
+		String uid = request.getParameter("uid");//uid为当前用户uid
 		UserInMatch userList = UserInMatch.getInstance();
 		
 		userList.user_in(uid);
 		
-		int uid1 = uid;
-		int uid2 = 0;
-		while(userList.user_match_check(uid) == -1)
+		String uid1 = uid;
+		String uid2 = "waiting";
+		while(userList.user_match_check(uid).equals(uid2))
 		{
 			/*Calendar current_time = Calendar.getInstance();
 			if(current_time.get - start_time.getSeconds() > 300) {
@@ -88,9 +87,13 @@ public class BasicController {
 		//若果uid在队列 0 ，1的位置，设置另一用户为
 		uid2 = userList.user_match_check(uid);
 		
-		String u1=String.valueOf(uid1);
-		String u2=String.valueOf(uid2);
-		String room = uid < uid2 ? u1+"_"+u2: u2+"_"+u1;
+		System.out.println(userList.get_UserList().toString());
+		
+//		String u1=String.valueOf(uid1);
+//		String u2=String.valueOf(uid2);
+//		System.out.println((uid1.compareTo(uid2)<0)+" "+uid1+" "+uid2);
+		String room = (uid1.compareTo(uid2)<0) ? uid1+"_"+uid2: uid2+"_"+uid1;
+		userList.user_off(uid);
 		model.addAttribute("room", room);
 		model.addAttribute("uid", uid);
 		return "chat";

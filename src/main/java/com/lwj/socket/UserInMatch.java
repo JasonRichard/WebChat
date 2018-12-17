@@ -9,39 +9,41 @@ public class UserInMatch {
 	
 	private int userCount;
 
-	List<Integer> userList;
+	List<String> userList;
 	
 	private UserInMatch() {
 		userCount = 0;
-		userList=new ArrayList<>();
+		userList=new ArrayList<String>();
 	}
 	
-	public void user_in(int uid) {
+	public void user_in(String uid) {
 		if(userList.contains(uid))
 			user_off(uid);
 		userList.add(uid);
 		userCount++;
 	}
 	
-	public void user_off(int uid) {
+	public void user_off(String uid) {
 		userList.remove(uid);
 		userCount--;
 	}
 	
-	public int user_match_check(int uid) {
+	public String user_match_check(String uid) {
+		if(userList.size() < 2)
+			return "waiting";
 		if(userList.get(0) == uid)
 			return userList.get(1);
 		else if(userList.get(1) == uid)
 			return userList.get(0);
 		
-		else  return -1;
+		else  return "waiting";
 	}
 	
 	public int get_UserCount(){
 		return userCount;
 	}
 	
-	public List<Integer> get_UserList(){
+	public List<String> get_UserList(){
 		return userList;
 	}
 	

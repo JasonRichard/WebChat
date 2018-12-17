@@ -11,4 +11,5 @@ public interface ILoginService {
 	
 	public JsonResult login(String account, String password);
 	
+
 }
